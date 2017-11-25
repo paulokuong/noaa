@@ -1,7 +1,7 @@
 from __future__ import absolute_import
 from __future__ import print_function
 from unittest.mock import patch
-from noaa import noaa
+from noaa_sdk import noaa
 import pytest
 
 try:
@@ -50,7 +50,7 @@ def test_get_request_header():
     }
 
 
-@patch('noaa.noaa.http_client.HTTPSConnection')
+@patch('noaa_sdk.noaa.http_client.HTTPSConnection')
 def test_make_get_request(mock_http_client):
     mock_response_obj = MagicMock()
     mock_response_obj.read = lambda: b'{"test":"test"}'
@@ -64,7 +64,7 @@ def test_make_get_request(mock_http_client):
     assert res == {"test": "test"}
 
 
-@patch('noaa.noaa.http_client.HTTPSConnection')
+@patch('noaa_sdk.noaa.http_client.HTTPSConnection')
 def test_make_get_request_failed(mock_http_client):
     mock_response_obj = MagicMock()
     mock_response_obj.read = lambda: None
@@ -78,7 +78,7 @@ def test_make_get_request_failed(mock_http_client):
     assert res == {'Error: Cannot connect to weather.gov.'}
 
 
-@patch('noaa.noaa.NOAA.make_get_request')
+@patch('noaa_sdk.noaa.NOAA.make_get_request')
 def test_points(mock_make_get_request):
     mock_make_get_request.return_value = None
     n = noaa.NOAA(user_agent='test_agent')
@@ -86,7 +86,7 @@ def test_points(mock_make_get_request):
     mock_make_get_request.assert_called_with('/points/23.44,34.55')
 
 
-@patch('noaa.noaa.NOAA.make_get_request')
+@patch('noaa_sdk.noaa.NOAA.make_get_request')
 def test_points_with_stations(mock_make_get_request):
     mock_make_get_request.return_value = None
     n = noaa.NOAA(user_agent='test_agent')
@@ -95,7 +95,7 @@ def test_points_with_stations(mock_make_get_request):
         '/points/23.44,34.55/stations')
 
 
-@patch('noaa.noaa.NOAA.make_get_request')
+@patch('noaa_sdk.noaa.NOAA.make_get_request')
 def test_points_forecast(mock_make_get_request):
     mock_make_get_request.return_value = None
     n = noaa.NOAA(user_agent='test_agent')
@@ -104,7 +104,7 @@ def test_points_forecast(mock_make_get_request):
         '/points/23.44,34.55/forecast')
 
 
-@patch('noaa.noaa.NOAA.make_get_request')
+@patch('noaa_sdk.noaa.NOAA.make_get_request')
 def test_points_forecast_with_hourly(mock_make_get_request):
     mock_make_get_request.return_value = None
     n = noaa.NOAA(user_agent='test_agent')
@@ -113,7 +113,7 @@ def test_points_forecast_with_hourly(mock_make_get_request):
         '/points/23.44,34.55/forecast/hourly')
 
 
-@patch('noaa.noaa.NOAA.make_get_request')
+@patch('noaa_sdk.noaa.NOAA.make_get_request')
 def test_stations(mock_make_get_request):
     mock_make_get_request.return_value = None
     n = noaa.NOAA(user_agent='test_agent')
@@ -121,7 +121,7 @@ def test_stations(mock_make_get_request):
     mock_make_get_request.assert_called_with('/stations')
 
 
-@patch('noaa.noaa.NOAA.make_get_request')
+@patch('noaa_sdk.noaa.NOAA.make_get_request')
 def test_stations_with_station_id(mock_make_get_request):
     mock_make_get_request.return_value = None
     n = noaa.NOAA(user_agent='test_agent')
@@ -130,7 +130,7 @@ def test_stations_with_station_id(mock_make_get_request):
         '/stations?id=PAULOSTATION')
 
 
-@patch('noaa.noaa.NOAA.make_get_request')
+@patch('noaa_sdk.noaa.NOAA.make_get_request')
 def test_stations_observations(mock_make_get_request):
     mock_make_get_request.return_value = None
     n = noaa.NOAA(user_agent='test_agent')
@@ -139,7 +139,7 @@ def test_stations_observations(mock_make_get_request):
         '/stations/PAULOSTATION/observations')
 
 
-@patch('noaa.noaa.NOAA.make_get_request')
+@patch('noaa_sdk.noaa.NOAA.make_get_request')
 def test_stations_observations_with_current(mock_make_get_request):
     mock_make_get_request.return_value = None
     n = noaa.NOAA(user_agent='test_agent')
@@ -148,7 +148,7 @@ def test_stations_observations_with_current(mock_make_get_request):
         '/stations/PAULOSTATION/observations/current')
 
 
-@patch('noaa.noaa.NOAA.make_get_request')
+@patch('noaa_sdk.noaa.NOAA.make_get_request')
 def test_stations_observations_with_recordId(mock_make_get_request):
     mock_make_get_request.return_value = None
     n = noaa.NOAA(user_agent='test_agent')
@@ -158,7 +158,7 @@ def test_stations_observations_with_recordId(mock_make_get_request):
         '/stations/PAULOSTATION/observations/2017-01-04T18:54:00+00:00')
 
 
-@patch('noaa.noaa.NOAA.make_get_request')
+@patch('noaa_sdk.noaa.NOAA.make_get_request')
 def test_products(mock_make_get_request):
     mock_make_get_request.return_value = None
     n = noaa.NOAA(user_agent='test_agent')
@@ -167,7 +167,7 @@ def test_products(mock_make_get_request):
         '/products/test_id')
 
 
-@patch('noaa.noaa.NOAA.make_get_request')
+@patch('noaa_sdk.noaa.NOAA.make_get_request')
 def test_products_types_with_nothing(mock_make_get_request):
     mock_make_get_request.return_value = None
     n = noaa.NOAA(user_agent='test_agent')
@@ -176,7 +176,7 @@ def test_products_types_with_nothing(mock_make_get_request):
         '/products/types')
 
 
-@patch('noaa.noaa.NOAA.make_get_request')
+@patch('noaa_sdk.noaa.NOAA.make_get_request')
 def test_products_types_with_id(mock_make_get_request):
     mock_make_get_request.return_value = None
     n = noaa.NOAA(user_agent='test_agent')
@@ -185,7 +185,7 @@ def test_products_types_with_id(mock_make_get_request):
         '/products/types/test_id')
 
 
-@patch('noaa.noaa.NOAA.make_get_request')
+@patch('noaa_sdk.noaa.NOAA.make_get_request')
 def test_products_types_with_locations_failed(mock_make_get_request):
     mock_make_get_request.return_value = None
     n = noaa.NOAA(user_agent='test_agent')
@@ -195,7 +195,7 @@ def test_products_types_with_locations_failed(mock_make_get_request):
     assert str(err.value) == ('Error: Missing type id (type_id=None)')
 
 
-@patch('noaa.noaa.NOAA.make_get_request')
+@patch('noaa_sdk.noaa.NOAA.make_get_request')
 def test_products_types_with_locations_and_id(mock_make_get_request):
     mock_make_get_request.return_value = None
     n = noaa.NOAA(user_agent='test_agent')
@@ -206,7 +206,7 @@ def test_products_types_with_locations_and_id(mock_make_get_request):
         '/products/types/test_id/locations/test_location_id')
 
 
-@patch('noaa.noaa.NOAA.make_get_request')
+@patch('noaa_sdk.noaa.NOAA.make_get_request')
 def test_products_locations(mock_make_get_request):
     mock_make_get_request.return_value = None
     n = noaa.NOAA(user_agent='test_agent')
@@ -216,7 +216,7 @@ def test_products_locations(mock_make_get_request):
         '/products/locations/test_location_id/types')
 
 
-@patch('noaa.noaa.NOAA.make_get_request')
+@patch('noaa_sdk.noaa.NOAA.make_get_request')
 def test_products_locations_without_id(mock_make_get_request):
     mock_make_get_request.return_value = None
     n = noaa.NOAA(user_agent='test_agent')
@@ -225,7 +225,7 @@ def test_products_locations_without_id(mock_make_get_request):
         '/products/locations')
 
 
-@patch('noaa.noaa.NOAA.make_get_request')
+@patch('noaa_sdk.noaa.NOAA.make_get_request')
 def test_offices(mock_make_get_request):
     mock_make_get_request.return_value = None
     n = noaa.NOAA(user_agent='test_agent')
@@ -234,7 +234,7 @@ def test_offices(mock_make_get_request):
         '/offices/test_office_id')
 
 
-@patch('noaa.noaa.NOAA.make_get_request')
+@patch('noaa_sdk.noaa.NOAA.make_get_request')
 def test_zones(mock_make_get_request):
     mock_make_get_request.return_value = None
     n = noaa.NOAA(user_agent='test_agent')
@@ -243,7 +243,7 @@ def test_zones(mock_make_get_request):
         '/zones/test_type/test_zone_id')
 
 
-@patch('noaa.noaa.NOAA.make_get_request')
+@patch('noaa_sdk.noaa.NOAA.make_get_request')
 def test_zones_with_forecast(mock_make_get_request):
     mock_make_get_request.return_value = None
     n = noaa.NOAA(user_agent='test_agent')
@@ -252,7 +252,7 @@ def test_zones_with_forecast(mock_make_get_request):
         '/zones/test_type/test_zone_id/forecast')
 
 
-@patch('noaa.noaa.NOAA.make_get_request')
+@patch('noaa_sdk.noaa.NOAA.make_get_request')
 def test_alerts(mock_make_get_request):
     mock_make_get_request.return_value = None
     n = noaa.NOAA(user_agent='test_agent')
@@ -262,7 +262,7 @@ def test_alerts(mock_make_get_request):
         '/alerts?active=2')
 
 
-@patch('noaa.noaa.NOAA.make_get_request')
+@patch('noaa_sdk.noaa.NOAA.make_get_request')
 def test_alerts_with_alert_id(mock_make_get_request):
     mock_make_get_request.return_value = None
     n = noaa.NOAA(user_agent='test_agent')
@@ -271,7 +271,7 @@ def test_alerts_with_alert_id(mock_make_get_request):
         '/alerts/test_alert_id')
 
 
-@patch('noaa.noaa.NOAA.make_get_request')
+@patch('noaa_sdk.noaa.NOAA.make_get_request')
 def test_active_alerts(mock_make_get_request):
     mock_make_get_request.return_value = None
     n = noaa.NOAA(user_agent='test_agent')
@@ -280,7 +280,7 @@ def test_active_alerts(mock_make_get_request):
         '/alerts/active')
 
 
-@patch('noaa.noaa.NOAA.make_get_request')
+@patch('noaa_sdk.noaa.NOAA.make_get_request')
 def test_active_alerts_with_count(mock_make_get_request):
     mock_make_get_request.return_value = None
     n = noaa.NOAA(user_agent='test_agent')
@@ -289,7 +289,7 @@ def test_active_alerts_with_count(mock_make_get_request):
         '/alerts/count')
 
 
-@patch('noaa.noaa.NOAA.make_get_request')
+@patch('noaa_sdk.noaa.NOAA.make_get_request')
 def test_active_alerts_with_zone_id(mock_make_get_request):
     mock_make_get_request.return_value = None
     n = noaa.NOAA(user_agent='test_agent')
@@ -298,7 +298,7 @@ def test_active_alerts_with_zone_id(mock_make_get_request):
         '/alerts/active/zone/test_zone_id')
 
 
-@patch('noaa.noaa.NOAA.make_get_request')
+@patch('noaa_sdk.noaa.NOAA.make_get_request')
 def test_active_alerts_with_area(mock_make_get_request):
     mock_make_get_request.return_value = None
     n = noaa.NOAA(user_agent='test_agent')
@@ -307,7 +307,7 @@ def test_active_alerts_with_area(mock_make_get_request):
         '/alerts/active/area/nyc')
 
 
-@patch('noaa.noaa.NOAA.make_get_request')
+@patch('noaa_sdk.noaa.NOAA.make_get_request')
 def test_active_alerts_with_region(mock_make_get_request):
     mock_make_get_request.return_value = None
     n = noaa.NOAA(user_agent='test_agent')

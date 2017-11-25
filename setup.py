@@ -1,7 +1,7 @@
 from setuptools import find_packages
 from setuptools import setup
 
-setup(name='noaa',
+setup(name='noaa_sdk',
       version='0.1',
       description='NOAA Python SDK',
       install_requires=[
