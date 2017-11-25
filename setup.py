@@ -1,8 +1,12 @@
 from setuptools import find_packages
-from setuptools import setup
+#from setuptools import setup
+from distutils.core import setup
 
-setup(name='noaa_sdk',
-      version='0.1',
+with open('README.rst') as file:
+    long_description = file.read()
+
+setup(name='noaa-sdk',
+      version='0.1.0',
       description='NOAA Python SDK',
       install_requires=[
           'httplib2==0.10.3',
@@ -20,4 +24,5 @@ setup(name='noaa_sdk',
       license='MIT',
       packages=find_packages(),
       include_package_data=True,
-      zip_safe=False)
+      zip_safe=False,
+      long_description=long_description)
