@@ -1,5 +1,4 @@
 from setuptools import find_packages
-#from setuptools import setup
 from distutils.core import setup
 
 with open('README.rst') as file:
@@ -17,7 +16,7 @@ setup(name='noaa-sdk',
           'License :: OSI Approved :: MIT License',
           'Programming Language :: Python :: 3.4'
       ],
-      keywords='noaa weather public v3 api sdk',
+      keywords='NOAA noaa weather public v3 api sdk',
       url='https://github.com/paulokuong/noaa',
       author='Paulo Kuong',
       author_email='paulo.kuong@gmail.com',

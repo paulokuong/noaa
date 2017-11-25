@@ -12,6 +12,12 @@ Requirements
 
 * Python 3.4 (tested)
 
+Installation
+------------
+```
+    pip install noaa-sdk
+```
+
 Goal
 ----
 
