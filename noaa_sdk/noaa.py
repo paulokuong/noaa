@@ -145,8 +145,8 @@ class NOAA(object):
 
         Args:
             station_id (str): station id.
-            start (str[optional]): start date of observation.
-            end (str[optional]): end date of observation.
+            startDate (str[optional]): start date of observation (eg. 2017-06-11T11:50:00+00:00).
+            endDate (str[optional]): end date of observation (eg. 2017-06-11T11:50:00+00:00).
             limit (int[optional]): limit of results.
             current (bool[optional]): True if needs current observations.
             recordId (str[optional]): recordId, Record Id (ISO8601DateTime)
@@ -256,8 +256,8 @@ class NOAA(object):
         Args:
             alert_id (str): alert id.
             active (int): Active alerts (1 or 0).
-            start (str): Start time (ISO8601DateTime).
-            end (str): End time (ISO8601DateTime).
+            startDate (str): Start time (ISO8601DateTime).
+            endDate (str): End time (ISO8601DateTime).
             status (str): Event status (alert, update, cancel).
             type (str): Event type (list forthcoming).
             zone_type (str): Zone type (land or marine).
