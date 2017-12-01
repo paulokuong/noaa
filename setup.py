@@ -5,7 +5,7 @@ with open('README.rst') as file:
     long_description = file.read()
 
 setup(name='noaa-sdk',
-      version='0.1.1',
+      version='0.1.1a',
       description='NOAA Python SDK',
       install_requires=[
           'httplib2==0.10.3',
