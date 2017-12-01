@@ -26,8 +26,8 @@ Code sample
 | To get weather observation data from all nearest stations in 11375, US between 2017-12-01 00:00:00 (UTC) to 2017-12-01 05:00:00 (UTC)
 
 .. code:: python
-from noaa_sdk import noaa
 
+    from noaa_sdk import noaa
     n = noaa.NOAA()
     observations = n.get_observations_by_postalcode_country(
         '11375','US','2017-12-01T00:00:00+00:00','2017-12-01T05:00:00+00:00')
@@ -44,8 +44,6 @@ from noaa_sdk import noaa
     n = noaa.NOAA()
     n.points_forecast(40.7314, -73.8656, hourly=False)
 
-
-
 Contributors
 ------------
 
@@ -53,5 +51,4 @@ Contributors
 
 .. _@pkuong: https://github.com/paulokuong
 
-.. |Build Status| image:: https://travis-ci.org/paulokuong/knapsack01.svg?branch=master
-:target: https://travis-ci.org/paulokuong/knapsack01
+.. |Build Status| image:: https://travis-ci.org/paulokuong/noaa.svg?branch=master:target: https://travis-ci.org/paulokuong/noaa
