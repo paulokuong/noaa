@@ -28,7 +28,7 @@ Keep on changing this SDK when NOAA updates their API. Class can be extended
 Code sample
 -----------
 
-| To get weather forecast for a coordinate in USA
+To get weather forecast for a coordinate:
 
 ```python
 
@@ -37,6 +37,9 @@ Code sample
     n = noaa.NOAA()
     n.points_forecast(40.7314, -73.8656, hourly=False)
 ```
+
+To get weather observation data from all nearest stations in 11375, US between
+2017-12-01 00:00:00 (UTC) to 2017-12-01 05:00:00 (UTC)
 
 ```python
 

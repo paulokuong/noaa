@@ -23,7 +23,7 @@ Goal
 Code sample
 -----------
 
-| To get weather observations data from all nearest stations in 11375, US
+| To get weather observation data from all nearest stations in 11375, US between 2017-12-01 00:00:00 (UTC) to 2017-12-01 05:00:00 (UTC)
 
 .. code:: python
 from noaa_sdk import noaa
