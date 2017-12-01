@@ -23,6 +23,18 @@ Goal
 Code sample
 -----------
 
+| To get weather observations data from all nearest stations in 11375, US
+
+.. code:: python
+from noaa_sdk import noaa
+
+    n = noaa.NOAA()
+    observations = n.get_observations_by_postalcode_country(
+        '11375','US','2017-12-01T00:00:00+00:00','2017-12-01T05:00:00+00:00')
+    for observation in observations:
+        print(observation)
+        break
+
 | To get weather forecast for a coordinate in USA
 
 .. code:: python
@@ -42,4 +54,4 @@ Contributors
 .. _@pkuong: https://github.com/paulokuong
 
 .. |Build Status| image:: https://travis-ci.org/paulokuong/knapsack01.svg?branch=master
-   :target: https://travis-ci.org/paulokuong/knapsack01
+:target: https://travis-ci.org/paulokuong/knapsack01
