@@ -51,4 +51,5 @@ Contributors
 
 .. _@pkuong: https://github.com/paulokuong
 
-.. |Build Status| image:: https://travis-ci.org/paulokuong/noaa.svg?branch=master:target: https://travis-ci.org/paulokuong/noaa
+.. |Build Status| image:: https://travis-ci.org/paulokuong/noaa.svg?branch=master
+.. target: https://travis-ci.org/paulokuong/noaa

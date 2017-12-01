@@ -23,13 +23,14 @@ class ACCEPT(object):
 class UTIL(object):
     """Utility class for making requests."""
 
-    def __init__(self, user_agent=None, accept=None):
+    def __init__(self, user_agent=None, accept=None, show_uri=False):
         """Constructor.
 
         Args:
             user_agent (str[optional]): user agent specified in the header.
             accept (str[optional]): accept string specified in the header.
         """
+        self._show_uri = show_uri
         if user_agent:
             self._user_agent = user_agent
         if accept:
@@ -40,6 +41,14 @@ class UTIL(object):
                     'Invalid format. '
                     'Available formats are: {}'.format(accepts))
             self._accept = accept
+
+    @property
+    def show_uri(self):
+        return self._show_uri
+
+    @show_uri.setter
+    def show_uri(self, value):
+        self._show_uri = value
 
     @property
     def accept(self):
@@ -84,6 +93,8 @@ class UTIL(object):
             dict: dictionary response.
         """
 
+        if self._show_uri:
+            print('Calling: {}'.format(uri))
         if not header:
             header = self.get_request_header()
         if not end_point:
@@ -102,7 +113,7 @@ class OSM(UTIL):
 
     OSM_ENDPOINT = 'nominatim.openstreetmap.org'
 
-    def __init__(self, user_agent='', accept=''):
+    def __init__(self, user_agent='', accept='', show_uri=False):
         """Constructor.
 
         Args:
@@ -111,7 +122,8 @@ class OSM(UTIL):
         """
         self._user_agent = user_agent
         self._accept = accept
-        super().__init__(user_agent=user_agent, accept=accept)
+        super().__init__(
+            user_agent=user_agent, accept=accept, show_uri=show_uri)
 
     def get_lat_lon_by_postalcode_country(self, postalcode, country):
         """Get latitude and longitude coordinate from postalcode
@@ -161,13 +173,13 @@ class NOAA(UTIL):
     DEFAULT_END_POINT = 'api.weather.gov'
     DEFAULT_USER_AGENT = 'Test (your@email.com)'
 
-    def __init__(self, user_agent=None, accept=None, show_called_uri=False):
+    def __init__(self, user_agent=None, accept=None, show_uri=False):
         """Constructor.
 
         Args:
             user_agent (str[optional]): user agent specified in the header.
             accept (str[optional]): accept string specified in the header.
-            show_called_uri (boolean[optional]): True for showing the
+            show_uri (boolean[optional]): True for showing the
                 actual url with query string being sent for requesting data.
         """
         if not user_agent:
@@ -175,7 +187,9 @@ class NOAA(UTIL):
         if not accept:
             accept = ACCEPT.GEOJSON
 
-        super().__init__(user_agent=user_agent, accept=accept)
+        super().__init__(
+            user_agent=user_agent, accept=accept,
+            show_uri=show_uri)
         self._osm = OSM()
 
     def get_observations_by_postalcode_country(
