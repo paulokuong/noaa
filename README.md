@@ -47,7 +47,7 @@ To get weather observation data from all nearest stations in 11375, US between
 
     n = noaa.NOAA()
     observations = n.get_observations_by_postalcode_country(
-        '11375','US','2017-12-01T00:00:00+00:00','2017-12-01T05:00:00+00:00')
+        '11365','US','2017-12-01','2017-12-02')
     for observation in observations:
         print(observation)
         break
@@ -56,31 +56,30 @@ To get weather observation data from all nearest stations in 11375, US between
 Result
 
 ```python
-    {
-     'seaLevelPressure': {'value': 102130, 'qualityControl': 'qc:V', 'unitCode': 'unit:Pa'},
-     'icon': 'https://api.weather.gov/icons/land/day/few?size=medium',
-     'elevation': {'value': 9, 'unitCode': 'unit:m'},
-     'windDirection': {'value': 330, 'qualityControl': 'qc:V', 'unitCode': 'unit:degree_(angle)'},
-     'precipitationLast6Hours': {'value': None, 'qualityControl': 'qc:Z', 'unitCode': 'unit:m'},
-     'timestamp': '2017-12-01T13:51:00+00:00',
-     'precipitationLast3Hours': {'value': None, 'qualityControl': 'qc:Z', 'unitCode': 'unit:m'},
-     'temperature': {'value': 9.3999877929688, 'qualityControl': 'qc:V', 'unitCode': 'unit:degC'},
-     'barometricPressure': {'value': 102130, 'qualityControl': 'qc:V', 'unitCode': 'unit:Pa'},
-     'visibility': {'value': 16090, 'qualityControl': 'qc:C', 'unitCode': 'unit:m'},
-     'cloudLayers': [{'amount': 'FEW', 'base': {'value': 7620, 'unitCode': 'unit:m'}}],
-     'heatIndex': {'value': None, 'qualityControl': 'qc:V', 'unitCode': 'unit:degC'},
-     'windSpeed': {'value': 6.1999998092651, 'qualityControl': 'qc:V', 'unitCode': 'unit:m_s-1'},
-     'relativeHumidity': {'value': 60.763379620783, 'qualityControl': 'qc:C', 'unitCode': 'unit:percent'},
-     '@type': 'wx:ObservationStation', 'presentWeather': [],
-     'maxTemperatureLast24Hours': {'value': None, 'qualityControl': None, 'unitCode': 'unit:degC'},
-     'rawMessage': 'KLGA 011351Z 33012KT 10SM FEW250 09/02 A3016 RMK AO2 SLP213 T00940022',
-     'windGust': {'value': None, 'qualityControl': 'qc:Z', 'unitCode': 'unit:m_s-1'},
-     'dewpoint': {'value': 2.2000061035156, 'qualityControl': 'qc:V', 'unitCode': 'unit:degC'},
-     'minTemperatureLast24Hours': {'value': None, 'qualityControl': None, 'unitCode': 'unit:degC'},
-     'windChill': {'value': 6.4144640119463, 'qualityControl': 'qc:V', 'unitCode': 'unit:degC'},
-     '@id': 'https://api.weather.gov/stations/KLGA/observations/2017-12-01T13:51:00+00:00',
-     'textDescription': 'Mostly Clear', 'station': 'https://api.weather.gov/stations/KLGA',
-     'precipitationLastHour': {'value': None, 'qualityControl': 'qc:Z', 'unitCode': 'unit:m'}}
+    {'minTemperatureLast24Hours': {'unitCode': 'unit:degC', 'qualityControl': None, 'value': None},
+    'icon': 'https://api.weather.gov/icons/land/night/bkn?size=medium',
+    '@type': 'wx:ObservationStation',
+    'cloudLayers': [{'amount': 'BKN', 'base': {'unitCode': 'unit:m', 'value': 2900}}],
+    'windSpeed': {'unitCode': 'unit:m_s-1', 'qualityControl': 'qc:V', 'value': 2.5999999046326},
+    'temperature': {'unitCode': 'unit:degC', 'qualityControl': 'qc:V', 'value': 9.9999938964844},
+    'precipitationLast6Hours': {'unitCode': 'unit:m', 'qualityControl': 'qc:Z', 'value': None},
+    'relativeHumidity': {'unitCode': 'unit:percent', 'qualityControl': 'qc:C', 'value': 76.720955130964},
+    'rawMessage': 'KBDR 010152Z 16005KT 10SM BKN095 10/06 A3006 RMK AO2 SLP179 T01000061',
+    'windDirection': {'unitCode': 'unit:degree_(angle)', 'qualityControl': 'qc:V', 'value': 160},
+    'seaLevelPressure': {'unitCode': 'unit:Pa', 'qualityControl': 'qc:V', 'value': 101790},
+    'precipitationLastHour': {'unitCode': 'unit:m', 'qualityControl': 'qc:Z', 'value': None},
+    'dewpoint': {'unitCode': 'unit:degC', 'qualityControl': 'qc:V', 'value': 6.1},
+    'windGust': {'unitCode': 'unit:m_s-1', 'qualityControl': 'qc:Z', 'value': None},
+    'maxTemperatureLast24Hours': {'unitCode': 'unit:degC', 'qualityControl': None, 'value': None},
+    'windChill': {'unitCode': 'unit:degC', 'qualityControl': 'qc:V', 'value': 8.7570299365604},
+    'barometricPressure': {'unitCode': 'unit:Pa', 'qualityControl': 'qc:V', 'value': 101800},
+    '@id': 'https://api.weather.gov/stations/KBDR/observations/2017-12-01T01:52:00+00:00',
+    'station': 'https://api.weather.gov/stations/KBDR', 'elevation': {'unitCode': 'unit:m', 'value': 5},
+    'timestamp': '2017-12-01T01:52:00+00:00',
+    'precipitationLast3Hours': {'unitCode': 'unit:m', 'qualityControl': 'qc:Z', 'value': None},
+    'visibility': {'unitCode': 'unit:m', 'qualityControl': 'qc:C', 'value': 16090},
+    'textDescription': 'Mostly Cloudy', 'presentWeather': [],
+    'heatIndex': {'unitCode': 'unit:degC', 'qualityControl': 'qc:V', 'value': None}}
 ```
 
 Contributors

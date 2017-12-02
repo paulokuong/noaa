@@ -7,6 +7,7 @@ SDK for NOAA Weather Service REST API.
 
     | Fully unit tested SDK for NOAA Weather Service REST API.
     | https://forecast-v3.weather.gov/documentation
+    | https://github.com/paulokuong/noaa
 
 Requirements
 ------------
@@ -30,10 +31,9 @@ Code sample
     from noaa_sdk import noaa
     n = noaa.NOAA()
     observations = n.get_observations_by_postalcode_country(
-        '11375','US','2017-12-01T00:00:00+00:00','2017-12-01T05:00:00+00:00')
+        '11365','US','2017-12-01','2017-12-02')
     for observation in observations:
         print(observation)
-        break
 
 | To get weather forecast for a coordinate in USA
 

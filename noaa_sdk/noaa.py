@@ -269,7 +269,7 @@ class NOAA(UTIL):
             station_id = station.split('/')[-1]
             response = self.stations_observations(
                 station_id=station_id, start=start, end=end)
-            for observation in response['features']:
+            for observation in response:
                 yield observation['properties']
 
     def points(self, point, stations=False):
