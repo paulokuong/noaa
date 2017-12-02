@@ -7,6 +7,7 @@
 import http.client as http_client
 import json
 from urllib.parse import urlencode
+from datetime import datetime
 
 
 class ACCEPT(object):
@@ -107,6 +108,41 @@ class UTIL(object):
         if data:
             return json.loads(data.decode("utf-8"))
 
+    def parse_param_timestamp(self, str_date_time):
+        """Parse string to datetime object.
+
+        Args:
+            str_date_time (str): date time 3 different formats:
+                '%Y-%m-%dT%H:%M:%SZ' | '%Y-%m-%d' | '%Y-%m-%d %H:%M:%S'
+        Returns:
+            datetime object.
+        """
+        formats = [
+            '%Y-%m-%dT%H:%M:%SZ',
+            '%Y-%m-%d',
+            '%Y-%m-%d %H:%M:%S'
+        ]
+
+        for format in formats:
+            try:
+                return datetime.strptime(str_date_time, format)
+            except Exception as err:
+                continue
+
+        raise Exception(
+            "Error: start and end must have "
+            "format '%Y-%m-%dT%H:%M:%SZ' | '%Y-%m-%d' | '%Y-%m-%d %H:%M:%S'")
+
+    def parse_response_timestamp(self, str_date_time):
+        """Parse string to datetime object.
+
+        Args:
+            str_date_time (str): date time in format (YYYY-MM-DD)
+        Returns:
+            datetime object.
+        """
+        return datetime.strptime(str_date_time, '%Y-%m-%dT%H:%M:%S+00:00')
+
 
 class OSM(UTIL):
     """Make request to Open Street Map nominatim Api."""
@@ -206,9 +242,9 @@ class NOAA(UTIL):
             postalcode (str): postal code.
             country (str): 2 letter country code.
             start (str): start date of observation
-                (eg. 2017-06-11T11:50:00Z).
+                (eg. '%Y-%m-%dT%H:%M:%SZ' | '%Y-%m-%d' | '%Y-%m-%d %H:%M:%S').
             end (str): end date of observation
-                (eg. 2017-06-11T11:50:00Z).
+                (eg. '%Y-%m-%dT%H:%M:%SZ' | '%Y-%m-%d' | '%Y-%m-%d %H:%M:%S').
             num_of_stations (int[optional]): get observations from the
                 nearest x stations.
         Returns:
@@ -319,9 +355,9 @@ class NOAA(UTIL):
         Args:
             station_id (str): station id.
             start (str[optional]): start date of observation
-                (eg. 2017-06-11T11:50:00Z).
+                (eg. '%Y-%m-%dT%H:%M:%SZ' | '%Y-%m-%d' | '%Y-%m-%d %H:%M:%S').
             end (str[optional]): end date of observation
-                (eg. 2017-06-11T11:50:00Z).
+                (eg. '%Y-%m-%dT%H:%M:%SZ' | '%Y-%m-%d' | '%Y-%m-%d %H:%M:%S').
             limit (int[optional]): limit of results.
             current (bool[optional]): True if needs current observations.
             recordId (str[optional]): recordId, Record Id (ISO8601DateTime)
@@ -339,10 +375,32 @@ class NOAA(UTIL):
                     '/stations/{stationId}/observations/current'.format(
                         stationId=station_id),
                     end_point=self.DEFAULT_END_POINT)
-            return self.make_get_request(
-                "/stations/{stationId}/observations?{query_string}".format(
-                    stationId=station_id, query_string=urlencode(params)),
+
+            observations = self.make_get_request(
+                "/stations/{stationId}/observations".format(stationId=station_id),
                 end_point=self.DEFAULT_END_POINT)
+
+            observations = observations['features']
+
+            # There is an issue on NOAA's side which causes start and end params
+            # not enable to filter anything (return empty results). So,
+            # for now, there is no chance but to fetch everything and filter
+            # the data below.
+
+            if 'start' in params:
+                observations = [
+                    i for i in observations
+                    if self.parse_response_timestamp(
+                        i['properties']['timestamp']) >= self.parse_param_timestamp(
+                        params['start'])]
+            if 'end' in params:
+                observations = [
+                    i for i in observations
+                    if self.parse_response_timestamp(
+                        i['properties']['timestamp']) <= self.parse_param_timestamp(
+                        params['end'])]
+            return observations
+
         return self.make_get_request(
             "/stations/{stationId}/observations".format(stationId=station_id),
             end_point=self.DEFAULT_END_POINT)
