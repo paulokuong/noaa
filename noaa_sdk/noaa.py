@@ -193,7 +193,7 @@ class NOAA(UTIL):
         self._osm = OSM()
 
     def get_observations_by_postalcode_country(
-            self, postalcode, country, startDate, endDate,
+            self, postalcode, country, start, end,
             num_of_stations=-1):
         """Get all nearest station observations by postalcode and
         country code.
@@ -205,10 +205,10 @@ class NOAA(UTIL):
         Args:
             postalcode (str): postal code.
             country (str): 2 letter country code.
-            startDate (str): start date of observation
-                (eg. 2017-06-11T11:50:00+00:00).
-            endDate (str): end date of observation
-                (eg. 2017-06-11T11:50:00+00:00).
+            start (str): start date of observation
+                (eg. 2017-06-11T11:50:00Z).
+            end (str): end date of observation
+                (eg. 2017-06-11T11:50:00Z).
             num_of_stations (int[optional]): get observations from the
                 nearest x stations.
         Returns:
@@ -232,7 +232,7 @@ class NOAA(UTIL):
                 break
             station_id = station.split('/')[-1]
             response = self.stations_observations(
-                station_id=station_id, startDate=startDate, endDate=endDate)
+                station_id=station_id, start=start, end=end)
             for observation in response['features']:
                 yield observation['properties']
 
@@ -318,10 +318,10 @@ class NOAA(UTIL):
 
         Args:
             station_id (str): station id.
-            startDate (str[optional]): start date of observation
-                (eg. 2017-06-11T11:50:00+00:00).
-            endDate (str[optional]): end date of observation
-                (eg. 2017-06-11T11:50:00+00:00).
+            start (str[optional]): start date of observation
+                (eg. 2017-06-11T11:50:00Z).
+            end (str[optional]): end date of observation
+                (eg. 2017-06-11T11:50:00Z).
             limit (int[optional]): limit of results.
             current (bool[optional]): True if needs current observations.
             recordId (str[optional]): recordId, Record Id (ISO8601DateTime)
@@ -471,8 +471,8 @@ class NOAA(UTIL):
         Args:
             alert_id (str): alert id.
             active (int): Active alerts (1 or 0).
-            startDate (str): Start time (ISO8601DateTime).
-            endDate (str): End time (ISO8601DateTime).
+            start (str): Start time (ISO8601DateTime).
+            end (str): End time (ISO8601DateTime).
             status (str): Event status (alert, update, cancel).
             type (str): Event type (list forthcoming).
             zone_type (str): Zone type (land or marine).
