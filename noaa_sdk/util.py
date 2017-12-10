@@ -3,7 +3,7 @@ import json
 import requests
 from datetime import datetime
 
-from accept import ACCEPT
+from noaa_sdk.accept import ACCEPT
 
 
 class UTIL(object):
