@@ -96,7 +96,7 @@ class NOAA(UTIL):
         self._osm = OSM()
 
     def get_observations_by_postalcode_country(
-            self, postalcode, country, start=None, end=None, num_of_stations=-1):
+            self, postalcode, country, start=None, end=None, num_of_stations=1):
         """Get all nearest station observations by postalcode and
         country code.
 
@@ -112,7 +112,7 @@ class NOAA(UTIL):
             end (str[optional]): end date of observation
                 (eg. '%Y-%m-%dT%H:%M:%SZ' | '%Y-%m-%d' | '%Y-%m-%d %H:%M:%S').
             num_of_stations (int[optional]): get observations from the
-                nearest x stations.
+                nearest x stations. (Put -1 of wants to get all stations.)
         Returns:
             generator: generator of dictionaries of observations with the
             following variables: 'relativeHumidity', 'presentWeather',

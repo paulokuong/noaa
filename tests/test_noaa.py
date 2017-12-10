@@ -50,7 +50,7 @@ def test_get_request_header():
     }
 
 
-@patch('noaa_sdk.noaa.http_client.HTTPSConnection')
+@patch('noaa_sdk.util.http_client.HTTPSConnection')
 def test_make_get_request(mock_http_client):
     mock_response_obj = MagicMock()
     mock_response_obj.read = lambda: b'{"test":"test"}'
@@ -65,7 +65,7 @@ def test_make_get_request(mock_http_client):
     assert res == {"test": "test"}
 
 
-@patch('noaa_sdk.noaa.http_client.HTTPSConnection')
+@patch('noaa_sdk.util.http_client.HTTPSConnection')
 def test_make_get_request_failed(mock_http_client):
     mock_response_obj = MagicMock()
     mock_response_obj.read = lambda: None
