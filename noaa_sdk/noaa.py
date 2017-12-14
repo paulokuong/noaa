@@ -137,7 +137,7 @@ class NOAA(UTIL):
 
         if 'properties' not in points_res or 'observationStations' not in points_res['properties']:
             raise Exception('Error: No Observation Stations found.')
-        stations = UTIL.make_get_request(
+        stations = self.make_get_request(
             uri=points_res['properties']['observationStations'],
             end_point='api.weather.gov')['observationStations']
 
