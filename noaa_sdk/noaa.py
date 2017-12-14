@@ -132,10 +132,16 @@ class NOAA(UTIL):
 
         lat, lon = self._osm.get_lat_lon_by_postalcode_country(
             postalcode, country)
-        stations = self.points(
-            '{},{}'.format(round(lat, 4), round(lon, 4)), stations=True)
+        points_res = self.points(
+            '{},{}'.format(round(lat, 4), round(lon, 4)))
 
-        for index, station in enumerate(stations['observationStations']):
+        if 'properties' not in points_res or 'observationStations' not in points_res['properties']:
+            raise Exception('Error: No Observation Stations found.')
+        stations = UTIL.make_get_request(
+            points_res['properties']['observationStations'],
+            end_point='api.weather.gov')['observationStations']
+
+        for index, station in enumerate(stations):
             if num_of_stations > 0 and num_of_stations <= index:
                 break
             station_id = station.split('/')[-1]
