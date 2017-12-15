@@ -100,20 +100,30 @@ def test_points_with_stations(mock_make_get_request):
 
 @patch('noaa_sdk.noaa.NOAA.make_get_request')
 def test_points_forecast(mock_make_get_request):
-    mock_make_get_request.return_value = None
+    mock_make_get_request.return_value = {
+        'properties': {
+            'forecast': 'forecast_uri',
+            'forecastHourly': 'forecast_hourly_uri'
+        }
+    }
     n = noaa.NOAA(user_agent='test_agent')
     n.points_forecast(23.44, 34.55, hourly=False)
-    mock_make_get_request.assert_called_with(
-        '/points/23.44,34.55/forecast', end_point=n.DEFAULT_END_POINT)
+    mock_make_get_request.assert_any_call(
+        uri='forecast_uri', end_point=n.DEFAULT_END_POINT)
 
 
 @patch('noaa_sdk.noaa.NOAA.make_get_request')
 def test_points_forecast_with_hourly(mock_make_get_request):
-    mock_make_get_request.return_value = None
+    mock_make_get_request.return_value = {
+        'properties': {
+            'forecast': 'forecast_hourly_uri',
+            'forecastHourly': 'forecast_hourly_uri'
+        }
+    }
     n = noaa.NOAA(user_agent='test_agent')
     n.points_forecast(23.44, 34.55, hourly=True)
-    mock_make_get_request.assert_called_with(
-        '/points/23.44,34.55/forecast/hourly', end_point=n.DEFAULT_END_POINT)
+    mock_make_get_request.assert_any_call(
+        uri='forecast_hourly_uri', end_point=n.DEFAULT_END_POINT)
 
 
 @patch('noaa_sdk.noaa.NOAA.make_get_request')
