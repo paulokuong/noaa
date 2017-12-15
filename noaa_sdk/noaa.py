@@ -139,7 +139,7 @@ class NOAA(UTIL):
             raise Exception('Error: No Observation Stations found.')
         stations = self.make_get_request(
             uri=points_res['properties']['observationStations'],
-            end_point='api.weather.gov')['observationStations']
+            end_point=self.DEFAULT_END_POINT)['observationStations']
 
         for index, station in enumerate(stations):
             if num_of_stations > 0 and num_of_stations <= index:
@@ -191,13 +191,15 @@ class NOAA(UTIL):
             json: json response from api.
         """
 
+        points = self.make_get_request(
+            "/points/{lat},{long}".format(
+                lat=lat, long=long), end_point=self.DEFAULT_END_POINT)
+        uri = points['properties']['forecast']
         if hourly:
-            return self.make_get_request(
-                "/points/{lat},{long}/forecast/hourly".format(
-                    lat=lat, long=long), end_point=self.DEFAULT_END_POINT)
+            uri = points['properties']['forecastHourly']
+
         return self.make_get_request(
-            "/points/{lat},{long}/forecast".format(lat=lat, long=long),
-            end_point=self.DEFAULT_END_POINT)
+            uri=uri, end_point=self.DEFAULT_END_POINT)
 
     def stations(self, **params):
         """Get list of US weather stations and their metadata.
