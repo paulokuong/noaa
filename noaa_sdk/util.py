@@ -1,5 +1,3 @@
-import http.client as http_client
-import json
 import requests
 from datetime import datetime
 
@@ -9,7 +7,7 @@ from noaa_sdk.accept import ACCEPT
 class UTIL(object):
     """Utility class for making requests."""
 
-    def __init__(self, user_agent=None, accept=None, show_uri=False):
+    def __init__(self, user_agent='', accept=None, show_uri=False):
         """Constructor.
 
         Args:
@@ -17,11 +15,12 @@ class UTIL(object):
             accept (str[optional]): accept string specified in the header.
         """
         self._show_uri = show_uri
-        if user_agent:
-            self._user_agent = user_agent
+        self._user_agent = user_agent
+
         if accept:
             accepts = [getattr(ACCEPT, i)
                        for i in dir(ACCEPT) if '__' not in i]
+            accepts = sorted(accepts)
             if accept not in accepts:
                 raise Exception(
                     'Invalid format. '
@@ -86,12 +85,17 @@ class UTIL(object):
         if not end_point:
             raise Exception('Error: end_point is None.')
 
-        conn = http_client.HTTPSConnection(end_point)
-        conn.request('GET', uri, headers=header)
-        res = conn.getresponse()
-        data = res.read()
-        if data:
-            return json.loads(data.decode("utf-8"))
+        if 'http://' in uri or 'https://' in uri:
+            uri = uri.replace('http://', '').replace('https://', '')
+            end_point = uri.split('/')[0]
+            uri = uri.replace(end_point, '')
+
+        res = requests.get(
+            'https://{}/{}'.format(end_point, uri), headers=header)
+
+        if res.status_code != 200:
+            raise Exception(res.text)
+        return res.json()
 
     def parse_param_timestamp(self, str_date_time):
         """Parse string to datetime object.

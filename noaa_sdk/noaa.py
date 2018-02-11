@@ -16,17 +16,13 @@ class OSM(UTIL):
 
     OSM_ENDPOINT = 'nominatim.openstreetmap.org'
 
-    def __init__(self, user_agent='', accept='', show_uri=False):
+    def __init__(self, show_uri=False):
         """Constructor.
-
-        Args:
-            user_agent (str[optional]): user agent specified in the header.
-            accept (str[optional]): accept string specified in the header.
         """
-        self._user_agent = user_agent
-        self._accept = accept
+        self._user_agent = 'noaa_sdk'
+        self._accept = ACCEPT.JSON
         super().__init__(
-            user_agent=user_agent, accept=accept, show_uri=show_uri)
+            user_agent=self._user_agent, accept=ACCEPT.JSON, show_uri=show_uri)
 
     def get_lat_lon_by_postalcode_country(self, postalcode, country):
         """Get latitude and longitude coordinate from postalcode
@@ -38,11 +34,10 @@ class OSM(UTIL):
         Returns:
             tuple: tuple of latitude and longitude.
         """
+
         res = self.make_get_request(
             '/search?postalcode={}&country={}&format=json'.format(
                 postalcode, country), end_point=self.OSM_ENDPOINT)
-        if len(res) == 0 or 'lat' not in res[0] or 'lon' not in res[0]:
-            raise Exception('No response from: {}'.format(self.OSM_ENDPOINT))
         return float(res[0]['lat']), float(res[0]['lon'])
 
     def get_postalcode_country_by_lan_lon(self, lat, lon):
@@ -124,14 +119,14 @@ class NOAA(UTIL):
             'timestamp', 'maxTemperatureLast24Hours', 'precipitationLastHour',
             'heatIndex', 'windSpeed', 'elevation'
         """
+
         stations_observations_params = {}
         if start:
             stations_observations_params['start'] = start
         if end:
             stations_observations_params['end'] = end
 
-        lat, lon = self._osm.get_lat_lon_by_postalcode_country(
-            postalcode, country)
+        lat, lon = self._osm.get_lat_lon_by_postalcode_country(postalcode, country)
         points_res = self.points(
             '{},{}'.format(round(lat, 4), round(lon, 4)))
 

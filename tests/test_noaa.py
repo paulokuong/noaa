@@ -24,9 +24,15 @@ def test_set_accept():
         noaa.NOAA(accept='test')
     assert str(err.value) == (
         "Invalid format. Available formats are: "
-        "['application/atom+xml', 'application/cap+xml', "
-        "'application/vnd.noaa.dwml+xml', 'application/geo+json', "
-        "'application/ld+json', 'application/vnd.noaa.obs+xml']")
+        "["
+        "'application/atom+xml', "
+        "'application/cap+xml', "
+        "'application/geo+json', "
+        "'application/json', "
+        "'application/ld+json', "
+        "'application/vnd.noaa.dwml+xml', "
+        "'application/vnd.noaa.obs+xml'"
+        "]")
 
 
 def test_test_user_agent():
@@ -50,14 +56,13 @@ def test_get_request_header():
     }
 
 
-@patch('noaa_sdk.util.http_client.HTTPSConnection')
-def test_make_get_request(mock_http_client):
+@patch('noaa_sdk.util.requests')
+def test_make_get_request(mock_requests):
     mock_response_obj = MagicMock()
-    mock_response_obj.read = lambda: b'{"test":"test"}'
-    mock_conn_object = MagicMock()
-    mock_conn_object.request = lambda x, y, **z: None
-    mock_conn_object.getresponse = lambda: mock_response_obj
-    mock_http_client.return_value = mock_conn_object
+    mock_response_obj.text = 'mock text'
+    mock_response_obj.json = lambda: {"test":"test"}
+    mock_response_obj.status_code = 200
+    mock_requests.get.return_value = mock_response_obj
 
     n = noaa.NOAA(user_agent='test_agent')
     res = n.make_get_request(
@@ -65,14 +70,13 @@ def test_make_get_request(mock_http_client):
     assert res == {"test": "test"}
 
 
-@patch('noaa_sdk.util.http_client.HTTPSConnection')
-def test_make_get_request_failed(mock_http_client):
+@patch('noaa_sdk.util.requests')
+def test_make_get_request_failed(mock_requests):
     mock_response_obj = MagicMock()
-    mock_response_obj.read = lambda: None
-    mock_conn_object = MagicMock()
-    mock_conn_object.request = lambda x, y, **z: None
-    mock_conn_object.getresponse = lambda: mock_response_obj
-    mock_http_client.return_value = mock_conn_object
+    mock_response_obj.text = 'mock text'
+    mock_response_obj.status_code = 500
+    mock_response_obj.json = lambda: {"test":"test"}
+    mock_requests.get.return_value = mock_response_obj
 
     with pytest.raises(Exception) as err:
         n = noaa.NOAA(user_agent='test_agent')
