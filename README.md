@@ -46,19 +46,15 @@ To get weather forecast with postal code and country code.
     n = noaa.NOAA()
     res = n.get_forecasts('11365', 'US', True)
     for i in res:
-        print('{} {} {}'.format(i['startTime'], i['shortForecast'], i['temperature']))
+        print(i)
 ```
 
 Result
 ```python
-    2018-02-11T12:00:00-05:00 Periods Of Heavy Rain 46
-    2018-02-11T13:00:00-05:00 Periods Of Heavy Rain 46
-    2018-02-11T14:00:00-05:00 Periods Of Rain 47
-    2018-02-11T15:00:00-05:00 Periods Of Rain 48
-    2018-02-11T16:00:00-05:00 Periods Of Rain 48
-    2018-02-11T17:00:00-05:00 Periods Of Rain 49
-    2018-02-11T18:00:00-05:00 Periods Of Rain 49
-    2018-02-11T19:00:00-05:00 Periods Of Rain 50
+    {'startTime': '2018-02-18T00:00:00-05:00', 'detailedForecast': '', 'shortForecast': 'Partly Cloudy', 'windSpeed': '5 mph', 'number': 148, 'icon': 'https://api.weather.gov/icons/land/night/sct?size=small', 'windDirection': 'SW', 'isDaytime': False, 'temperatureTrend': None, 'endTime': '2018-02-18T01:00:00-05:00', 'name': '', 'temperatureUnit': 'F', 'temperature': 34}
+    {'startTime': '2018-02-18T01:00:00-05:00', 'detailedForecast': '', 'shortForecast': 'Mostly Cloudy', 'windSpeed': '5 mph', 'number': 149, 'icon': 'https://api.weather.gov/icons/land/night/bkn?size=small', 'windDirection': 'SW', 'isDaytime': False, 'temperatureTrend': None, 'endTime': '2018-02-18T02:00:00-05:00', 'name': '', 'temperatureUnit': 'F', 'temperature': 33}
+    {'startTime': '2018-02-18T02:00:00-05:00', 'detailedForecast': '', 'shortForecast': 'Mostly Cloudy', 'windSpeed': '5 mph', 'number': 150, 'icon': 'https://api.weather.gov/icons/land/night/bkn?size=small', 'windDirection': 'SW', 'isDaytime': False, 'temperatureTrend': None, 'endTime': '2018-02-18T03:00:00-05:00', 'name': '', 'temperatureUnit': 'F', 'temperature': 31}
+    {'startTime': '2018-02-18T03:00:00-05:00', 'detailedForecast': '', 'shortForecast': 'Partly Cloudy', 'windSpeed': '5 mph', 'number': 151, 'icon': 'https://api.weather.gov/icons/land/night/sct?size=small', 'windDirection': 'SW', 'isDaytime': False, 'temperatureTrend': None, 'endTime': '2018-02-18T04:00:00-05:00', 'name': '', 'temperatureUnit': 'F', 'temperature': 31}
 ```
 
 To get weather observation data from all nearest stations in 11375, US between
