@@ -34,14 +34,6 @@ Code sample
     for i in res:
         print(i)
 
-| Sample response
-
-.. code:: python
-    {'startTime': '2018-02-18T00:00:00-05:00', 'detailedForecast': '', 'shortForecast': 'Partly Cloudy', 'windSpeed': '5 mph', 'number': 148, 'icon': 'https://api.weather.gov/icons/land/night/sct?size=small', 'windDirection': 'SW', 'isDaytime': False, 'temperatureTrend': None, 'endTime': '2018-02-18T01:00:00-05:00', 'name': '', 'temperatureUnit': 'F', 'temperature': 34}
-    {'startTime': '2018-02-18T01:00:00-05:00', 'detailedForecast': '', 'shortForecast': 'Mostly Cloudy', 'windSpeed': '5 mph', 'number': 149, 'icon': 'https://api.weather.gov/icons/land/night/bkn?size=small', 'windDirection': 'SW', 'isDaytime': False, 'temperatureTrend': None, 'endTime': '2018-02-18T02:00:00-05:00', 'name': '', 'temperatureUnit': 'F', 'temperature': 33}
-    {'startTime': '2018-02-18T02:00:00-05:00', 'detailedForecast': '', 'shortForecast': 'Mostly Cloudy', 'windSpeed': '5 mph', 'number': 150, 'icon': 'https://api.weather.gov/icons/land/night/bkn?size=small', 'windDirection': 'SW', 'isDaytime': False, 'temperatureTrend': None, 'endTime': '2018-02-18T03:00:00-05:00', 'name': '', 'temperatureUnit': 'F', 'temperature': 31}
-    {'startTime': '2018-02-18T03:00:00-05:00', 'detailedForecast': '', 'shortForecast': 'Partly Cloudy', 'windSpeed': '5 mph', 'number': 151, 'icon': 'https://api.weather.gov/icons/land/night/sct?size=small', 'windDirection': 'SW', 'isDaytime': False, 'temperatureTrend': None, 'endTime': '2018-02-18T04:00:00-05:00', 'name': '', 'temperatureUnit': 'F', 'temperature': 31}
-
 | To get weather observation data from all nearest stations in 11375, US between 2017-12-01 00:00:00 (UTC) to 2017-12-01 05:00:00 (UTC)
 
 .. code:: python
