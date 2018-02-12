@@ -1,8 +1,14 @@
-# API Wrapper for NOAA API V3
-# ===========================
-# For more detailed information about NOAA API,
-# visit: https://forecast-v3.weather.gov/documentation
+"""
+API Wrapper for NOAA API V3
+===========================
+For more detailed information about NOAA API,
+visit: https://forecast-v3.weather.gov/documentation
 
+Geoencoding is made possible by Open Street Map (© OpenStreetMap contributors)
+For copyright information, visit: https://www.openstreetmap.org/copyright
+
+
+"""
 
 import json
 from urllib.parse import urlencode
@@ -12,17 +18,24 @@ from noaa_sdk.accept import ACCEPT
 
 
 class OSM(UTIL):
-    """Make request to Open Street Map nominatim Api."""
+    """
+    Make request to Open Street Map nominatim Api.
+    ==============================================
+    © OpenStreetMap contributors
+
+    Open Street Map, you guys are awesome, don't block me please.
+    """
 
     OSM_ENDPOINT = 'nominatim.openstreetmap.org'
 
     def __init__(self, show_uri=False):
         """Constructor.
         """
-        self._user_agent = 'noaa_sdk'
+        self._user_agent = 'pypi noaa_sdk'
         self._accept = ACCEPT.JSON
         super().__init__(
-            user_agent=self._user_agent, accept=ACCEPT.JSON, show_uri=show_uri)
+            user_agent=self._user_agent, accept=ACCEPT.JSON,
+            show_uri=show_uri)
 
     def get_lat_lon_by_postalcode_country(self, postalcode, country):
         """Get latitude and longitude coordinate from postalcode
@@ -90,7 +103,24 @@ class NOAA(UTIL):
             show_uri=show_uri)
         self._osm = OSM()
 
-    def get_observations_by_postalcode_country(
+    def get_forecasts(self, postal_code, country, hourly=False):
+        """Get forecasts by postal code and country code.
+
+        Args:
+            postalcode (str): postal code.
+            country (str): 2 letter country code.
+            hourly (boolean[optional]): True for getting hourly forecast.
+        Returns:
+            list: list of weather forecasts.
+        """
+
+        lat, lon = self._osm.get_lat_lon_by_postalcode_country(postal_code, country)
+        res = self.points_forecast(lat, lon, hourly)
+        if 'properties' in res and 'periods' in res['properties']:
+            return res['properties']['periods']
+        return []
+
+    def get_observations(
             self, postalcode, country, start=None, end=None, num_of_stations=1):
         """Get all nearest station observations by postalcode and
         country code.
@@ -146,6 +176,11 @@ class NOAA(UTIL):
             for observation in response['features']:
                 yield observation.get('properties')
 
+    def get_observations_by_postalcode_country(
+            self, postalcode, country, start=None, end=None, num_of_stations=1):
+        """Deprecated. Please use method get_observations."""
+        return self.get_observations(postalcode, country, start, end, num_of_stations)
+
     def points(self, point, stations=False):
         """Metadata about a point.
         This is the primary endpoint for forecast information for a location.
@@ -182,6 +217,7 @@ class NOAA(UTIL):
         Args:
             lat (float): latitude of the weather station coordinate.
             long (float): longitude of the weather station coordinate.
+            hourly (boolean[optional]): True for getting hourly forecast.
         Returns:
             json: json response from api.
         """

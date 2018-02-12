@@ -1,5 +1,7 @@
 import requests
+import time
 from datetime import datetime
+from functools import wraps
 
 from noaa_sdk.accept import ACCEPT
 
@@ -26,6 +28,36 @@ class UTIL(object):
                     'Invalid format. '
                     'Available formats are: {}'.format(accepts))
             self._accept = accept
+
+    def _retry_request_decorator(max_retries):
+        def _retry_request_sub_decorator(request):
+            @wraps(request)
+            def wrapper(*args, **kargs):
+                status_code = ''
+                retry = 0
+                fib_num_a = 1
+                fib_num_b = 1
+                response = request(*args, **kargs)
+                status_code = response.status_code
+
+                while retry <= max_retries and (status_code == '' or status_code == 500):
+                    response = request(*args, **kargs)
+                    status_code = response.status_code
+                    new_interval = fib_num_b + fib_num_a
+                    fib_num_a = fib_num_b
+                    time.sleep(new_interval)
+                    fib_num_b = new_interval
+                    retry += 1
+
+                if retry > max_retries:
+                    raise Exception(
+                        'Maximum retries exceeded. Response object dump: {}'.format(
+                            response))
+                return response
+
+            return wrapper
+
+        return _retry_request_sub_decorator
 
     @property
     def show_uri(self):
@@ -66,6 +98,11 @@ class UTIL(object):
             'accept': self._accept
         }
 
+    @_retry_request_decorator(10)
+    def _get(self, end_point, uri, header):
+        return requests.get(
+            'https://{}/{}'.format(end_point, uri), headers=header)
+
     def make_get_request(self, uri, header=None, end_point=None):
         """Encapsulate code for GET request.
 
@@ -90,11 +127,8 @@ class UTIL(object):
             end_point = uri.split('/')[0]
             uri = uri.replace(end_point, '')
 
-        res = requests.get(
-            'https://{}/{}'.format(end_point, uri), headers=header)
+        res = self._get(end_point, uri, header)
 
-        if res.status_code != 200:
-            raise Exception(res.text)
         return res.json()
 
     def parse_param_timestamp(self, str_date_time):

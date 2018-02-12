@@ -38,6 +38,29 @@ To get weather forecast for a coordinate:
     n.points_forecast(40.7314, -73.8656, hourly=False)
 ```
 
+To get weather forecast with postal code and country code.
+```python
+
+    from noaa_sdk import noaa
+
+    n = noaa.NOAA()
+    res = n.get_forecasts('11365', 'US', True)
+    for i in res:
+        print('{} {} {}'.format(i['startTime'], i['shortForecast'], i['temperature']))
+```
+
+Result
+```python
+    2018-02-11T12:00:00-05:00 Periods Of Heavy Rain 46
+    2018-02-11T13:00:00-05:00 Periods Of Heavy Rain 46
+    2018-02-11T14:00:00-05:00 Periods Of Rain 47
+    2018-02-11T15:00:00-05:00 Periods Of Rain 48
+    2018-02-11T16:00:00-05:00 Periods Of Rain 48
+    2018-02-11T17:00:00-05:00 Periods Of Rain 49
+    2018-02-11T18:00:00-05:00 Periods Of Rain 49
+    2018-02-11T19:00:00-05:00 Periods Of Rain 50
+```
+
 To get weather observation data from all nearest stations in 11375, US between
 2017-12-01 00:00:00 (UTC) to 2017-12-01 05:00:00 (UTC)
 
