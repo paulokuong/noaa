@@ -69,7 +69,7 @@ To get weather observation data from all nearest stations in 11375, US between
     from noaa_sdk import noaa
 
     n = noaa.NOAA()
-    observations = n.get_observations_by_postalcode_country('11365','US')
+    observations = n.get_observations('11365','US')
     for observation in observations:
         print(observation)
         break

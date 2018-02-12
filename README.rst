@@ -24,13 +24,23 @@ Goal
 Code sample
 -----------
 
+| To get weather forecast with postal code and country code.
+
+.. code:: python
+
+    from noaa_sdk import noaa
+    n = noaa.NOAA()
+    res = n.get_forecasts('11365', 'US', True)
+    for i in res:
+        print('{} {} {}'.format(i['startTime'], i['shortForecast'], i['temperature']))
+
 | To get weather observation data from all nearest stations in 11375, US between 2017-12-01 00:00:00 (UTC) to 2017-12-01 05:00:00 (UTC)
 
 .. code:: python
 
     from noaa_sdk import noaa
     n = noaa.NOAA()
-    observations = n.get_observations_by_postalcode_country('11365','US')
+    observations = n.get_observations('11365','US')
     for observation in observations:
         print(observation)
 
@@ -39,7 +49,6 @@ Code sample
 .. code:: python
 
     from noaa_sdk import noaa
-
     n = noaa.NOAA()
     n.points_forecast(40.7314, -73.8656, hourly=False)
 
