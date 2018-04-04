@@ -116,12 +116,17 @@ class NOAA(UTIL):
 
         lat, lon = self._osm.get_lat_lon_by_postalcode_country(postal_code, country)
         res = self.points_forecast(lat, lon, hourly)
-        if 'properties' in res and 'periods' in res['properties']:
-            return res['properties']['periods']
-        elif 'status' in res and res['status'] == 503 and 'detail' in res:
+
+        if 'status' in res and res['status'] == 503 and 'detail' in res:
             raise Exception('Status: {}, NOAA API Error Response: {}'.format(
                 res['status'], res['detail']))
-        return []
+        elif 'properties' not in res:
+            raise Exception(
+                '"properties" attribute not found. Possible response json changes')
+        elif 'properties' in res and 'periods' not in res['properties']:
+            raise Exception(
+                '"periods" attribute not found. Possible response json changes')
+        return res['properties']['periods']
 
     def get_observations(
             self, postalcode, country, start=None, end=None, num_of_stations=1):
