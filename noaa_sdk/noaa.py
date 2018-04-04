@@ -103,7 +103,7 @@ class NOAA(UTIL):
             show_uri=show_uri)
         self._osm = OSM()
 
-    def get_forecasts(self, postal_code, country, hourly=False):
+    def get_forecasts(self, postal_code, country, hourly=True):
         """Get forecasts by postal code and country code.
 
         Args:
@@ -118,6 +118,9 @@ class NOAA(UTIL):
         res = self.points_forecast(lat, lon, hourly)
         if 'properties' in res and 'periods' in res['properties']:
             return res['properties']['periods']
+        elif 'status' in res and res['status'] == 503 and 'detail' in res:
+            raise Exception('Status: {}, NOAA API Error Response: {}'.format(
+                res['status'], res['detail']))
         return []
 
     def get_observations(
