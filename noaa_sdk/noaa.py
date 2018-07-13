@@ -114,7 +114,8 @@ class NOAA(UTIL):
             list: list of weather forecasts.
         """
 
-        lat, lon = self._osm.get_lat_lon_by_postalcode_country(postal_code, country)
+        lat, lon = self._osm.get_lat_lon_by_postalcode_country(
+            postal_code, country)
         res = self.points_forecast(lat, lon, hourly)
 
         if 'status' in res and res['status'] == 503 and 'detail' in res:
@@ -164,7 +165,8 @@ class NOAA(UTIL):
         if end:
             stations_observations_params['end'] = end
 
-        lat, lon = self._osm.get_lat_lon_by_postalcode_country(postalcode, country)
+        lat, lon = self._osm.get_lat_lon_by_postalcode_country(
+            postalcode, country)
         points_res = self.points(
             '{},{}'.format(round(lat, 4), round(lon, 4)))
 
@@ -181,7 +183,10 @@ class NOAA(UTIL):
             response = self.stations_observations(
                 station_id=station_id, **stations_observations_params)
 
-            for observation in response['features']:
+            observations = response
+            if type(response) == dict:
+                observations = response['features']
+            for observation in observations:
                 yield observation.get('properties')
 
     def get_observations_by_postalcode_country(
@@ -297,7 +302,8 @@ class NOAA(UTIL):
                     end_point=self.DEFAULT_END_POINT)
 
             observations = self.make_get_request(
-                "/stations/{stationId}/observations".format(stationId=station_id),
+                "/stations/{stationId}/observations".format(
+                    stationId=station_id),
                 end_point=self.DEFAULT_END_POINT)
 
             observations = observations['features']
