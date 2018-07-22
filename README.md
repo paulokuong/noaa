@@ -57,8 +57,7 @@ Result
     {'startTime': '2018-02-18T03:00:00-05:00', 'detailedForecast': '', 'shortForecast': 'Partly Cloudy', 'windSpeed': '5 mph', 'number': 151, 'icon': 'https://api.weather.gov/icons/land/night/sct?size=small', 'windDirection': 'SW', 'isDaytime': False, 'temperatureTrend': None, 'endTime': '2018-02-18T04:00:00-05:00', 'name': '', 'temperatureUnit': 'F', 'temperature': 31}
 ```
 
-To get weather observation data from all nearest stations in 11375, US between
-2017-12-01 00:00:00 (UTC) to 2017-12-01 05:00:00 (UTC)
+To get weather observation data from all nearest stations in 11375
 
 ```python
 
@@ -70,8 +69,18 @@ To get weather observation data from all nearest stations in 11375, US between
         print(observation)
         break
 ```
+with date range
+```python
+    from noaa_sdk import noaa
 
-Result
+    n = noaa.NOAA()
+    observations = n.get_observations('11365','US',start='2017-01-01',end='2018-02-02')
+    for observation in observations:
+        print(observation)
+        break
+```
+
+Example Result
 
 ```python
     {'minTemperatureLast24Hours': {'unitCode': 'unit:degC', 'qualityControl': None, 'value': None},
