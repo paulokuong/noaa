@@ -106,7 +106,8 @@ class UTIL(object):
             response = requests.get(
                 'https://{}/{}'.format(end_point, uri), headers=header)
         except Exception as err:
-            print('Caught exception: {}'.format(str(err)))
+            if self._show_uri:
+                print('Caught exception: {}'.format(str(err)))
             InstanceProperties = namedtuple(
                 'ResponseProperties', ['status_code'])
             response = InstanceProperties(status_code=500)
