@@ -51,6 +51,10 @@ class OSM(UTIL):
         res = self.make_get_request(
             '/search?postalcode={}&country={}&format=json'.format(
                 postalcode, country), end_point=self.OSM_ENDPOINT)
+        if len(res) == 0 or 'lat' not in res[0] or 'lon' not in res[0]:
+            raise Exception(
+                'Postalcode and Country: {}, {} does not exist.'.format(
+                    postalcode, country))
         return float(res[0]['lat']), float(res[0]['lon'])
 
     def get_postalcode_country_by_lan_lon(self, lat, lon):
@@ -310,7 +314,7 @@ class NOAA(UTIL):
 
             # There is an issue on NOAA's side which causes start and end params
             # not enable to filter anything (return empty results). So,
-            # for now, there is no chance but to fetch everything and filter
+            # for now, there is no choice but to fetch everything and filter
             # the data below.
 
             if 'start' in params:

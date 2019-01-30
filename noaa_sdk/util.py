@@ -1,7 +1,9 @@
-import requests
-import time
+from collections import namedtuple
 from datetime import datetime
 from functools import wraps
+import requests
+import time
+
 
 from noaa_sdk.accept import ACCEPT
 
@@ -37,10 +39,9 @@ class UTIL(object):
                 retry = 0
                 fib_num_a = 1
                 fib_num_b = 1
-                response = request(*args, **kargs)
-                status_code = response.status_code
 
-                while retry <= max_retries and (status_code == '' or status_code == 500):
+                while status_code == '' or (retry <= max_retries and (
+                        status_code == '' or status_code == 500)):
                     response = request(*args, **kargs)
                     status_code = response.status_code
                     new_interval = fib_num_b + fib_num_a
@@ -100,8 +101,16 @@ class UTIL(object):
 
     @_retry_request_decorator(10)
     def _get(self, end_point, uri, header):
-        return requests.get(
-            'https://{}/{}'.format(end_point, uri), headers=header)
+        response = None
+        try:
+            response = requests.get(
+                'https://{}/{}'.format(end_point, uri), headers=header)
+        except Exception as err:
+            print('Caught exception: {}'.format(str(err)))
+            InstanceProperties = namedtuple(
+                'ResponseProperties', ['status_code'])
+            response = InstanceProperties(status_code=500)
+        return response
 
     def make_get_request(self, uri, header=None, end_point=None):
         """Encapsulate code for GET request.
