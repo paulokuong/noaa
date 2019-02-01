@@ -280,6 +280,8 @@ class NOAA(UTIL):
         Response in this method should not be modified.
         In this way, we can keep track of changes made by NOAA through
         functional tests @todo(paulokuong) later on.
+        (*Note: There is a delay on NOAA's side for "unpopular" stations which
+        causes start and end params not enable to query anything sometimes.)
 
         Args:
             station_id (str): station id.
@@ -293,43 +295,56 @@ class NOAA(UTIL):
         Returns:
             json: json response from api.
         """
+
+        if not station_id:
+            raise Exception("'station_id' is required.")
+        if 'recordId' in params and 'current' in params:
+            raise Exception("Cannot have both 'current' and 'recordId'")
+        if 'start' in params:
+            start = params['start']
+            self.parse_param_timestamp(start)
+            if len(start) < 19:
+                start = '{}T00:00:00Z'.format(start[:10])
+            elif len(params['start']) < 20:
+                start = start.replace(' ', 'T')
+                start = '{}Z'.format(start)
+            params['start'] = start
+        if 'end' in params:
+            end = params['end']
+            self.parse_param_timestamp(end)
+            if len(end) < 19:
+                end = '{}T23:59:59Z'.format(end[:10])
+            elif len(params['end']) < 20:
+                end = end.replace(' ', 'T')
+                end = '{}Z'.format(end)
+            params['end'] = end
+
+        request_uri = "/stations/{stationId}/observations".format(
+            stationId=station_id)
+
         if len(params) > 0:
             if 'recordId' in params:
                 return self.make_get_request(
-                    '/stations/{stationId}/observations/{recordId}'.format(
-                        stationId=station_id, recordId=params['recordId']),
+                    '{old_request_uri}/{recordId}'.format(
+                        old_request_uri=request_uri,
+                        recordId=params['recordId']),
                     end_point=self.DEFAULT_END_POINT)
             if 'current' in params:
                 return self.make_get_request(
-                    '/stations/{stationId}/observations/current'.format(
-                        stationId=station_id),
+                    '{old_request_uri}/current'.format(
+                        old_request_uri=request_uri),
                     end_point=self.DEFAULT_END_POINT)
 
+            if len(params) > 1:
+                request_uri = '{old_request_uri}?{query_string}'.format(
+                    old_request_uri=request_uri,
+                    query_string=urlencode(params))
+
             observations = self.make_get_request(
-                "/stations/{stationId}/observations".format(
-                    stationId=station_id),
-                end_point=self.DEFAULT_END_POINT)
-
-            observations = observations['features']
-
-            # There is an issue on NOAA's side which causes start and end params
-            # not enable to filter anything (return empty results). So,
-            # for now, there is no choice but to fetch everything and filter
-            # the data below.
-
-            if 'start' in params:
-                observations = [
-                    i for i in observations
-                    if self.parse_response_timestamp(
-                        i['properties']['timestamp']) >= self.parse_param_timestamp(
-                        params['start'])]
-            if 'end' in params:
-                observations = [
-                    i for i in observations
-                    if self.parse_response_timestamp(
-                        i['properties']['timestamp']) <= self.parse_param_timestamp(
-                        params['end'])]
-            return observations
+                request_uri, end_point=self.DEFAULT_END_POINT)
+            if 'features' not in observations:
+                raise Exception(observations)
+            return observations['features']
 
         return self.make_get_request(
             "/stations/{stationId}/observations".format(stationId=station_id),

@@ -41,7 +41,7 @@ class UTIL(object):
                 fib_num_b = 1
 
                 while status_code == '' or (retry <= max_retries and (
-                        status_code == '' or status_code == 500)):
+                        status_code == '' or status_code != 200)):
                     response = request(*args, **kargs)
                     status_code = response.status_code
                     new_interval = fib_num_b + fib_num_a
