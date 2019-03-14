@@ -110,6 +110,10 @@ class NOAA(UTIL):
     def get_forecasts(self, postal_code, country, hourly=True):
         """Get forecasts by postal code and country code.
 
+           This is an extensive functionality, aligning data
+           from Open Street Map to enable postal code and country code
+           params for weather forecast data.
+
         Args:
             postalcode (str): postal code.
             country (str): 2 letter country code.
