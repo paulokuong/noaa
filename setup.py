@@ -23,7 +23,7 @@ setup(name='noaa-sdk',
       author='Paulo Kuong',
       author_email='paulo.kuong@gmail.com',
       license='MIT',
-      packages=find_packages(),
+      packages=find_packages(exclude=["tests"]),
       include_package_data=True,
       zip_safe=False,
       long_description=long_description)
