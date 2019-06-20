@@ -15,7 +15,9 @@ from urllib.parse import urlencode
 
 from noaa_sdk.util import UTIL
 from noaa_sdk.accept import ACCEPT
+from collections import namedtuple
 
+Coordinates = namedtuple('Coordinates', 'lat lon')
 
 class OSM(UTIL):
     """
@@ -55,9 +57,9 @@ class OSM(UTIL):
             raise Exception(
                 'Postalcode and Country: {}, {} does not exist.'.format(
                     postalcode, country))
-        return float(res[0]['lat']), float(res[0]['lon'])
+        return Coordinates(float(res[0]['lat']), float(res[0]['lon']))
 
-    def get_postalcode_country_by_lan_lon(self, lat, lon):
+    def get_postalcode_country_by_lan_lon(self, coordinates):
         """Get postalcode and country code by latitude and longitude.
 
         Args:
@@ -67,8 +69,8 @@ class OSM(UTIL):
             tuple: tuple of postalcode and country code.
         """
         res = self.make_get_request(
-            '/reverse?lat={}&lon={}&addressdetails=1&format=json'.format(
-                lat, lon),
+            '/reverse?lat={point.lat}&lon={point.lon}&addressdetails=1&format=json'.format(
+                point=coordinates),
             end_point=self.OSM_ENDPOINT)
         if 'address' not in res:
             raise Exception('No address found.')
@@ -122,9 +124,9 @@ class NOAA(UTIL):
             list: list of weather forecasts.
         """
 
-        lat, lon = self._osm.get_lat_lon_by_postalcode_country(
+        coordinates = self._osm.get_lat_lon_by_postalcode_country(
             postal_code, country)
-        res = self.points_forecast(lat, lon, hourly)
+        res = self.points_forecast(coordinates, hourly)
 
         if 'status' in res and res['status'] == 503 and 'detail' in res:
             raise Exception('Status: {}, NOAA API Error Response: {}'.format(
@@ -173,10 +175,9 @@ class NOAA(UTIL):
         if end:
             stations_observations_params['end'] = end
 
-        lat, lon = self._osm.get_lat_lon_by_postalcode_country(
+        coordinates = self._osm.get_lat_lon_by_postalcode_country(
             postalcode, country)
-        points_res = self.points(
-            '{},{}'.format(round(lat, 4), round(lon, 4)))
+        points_res = self.points(coordinates)
 
         if 'properties' not in points_res or 'observationStations' not in points_res['properties']:
             raise Exception('Error: No Observation Stations found.')
@@ -214,7 +215,7 @@ class NOAA(UTIL):
         functional tests @todo(paulokuong) later on.
 
         Args:
-            point (str): lat,long.
+            point (noaa_sdk.noaa.Coordinates): geographic coordinates to request data from nearby stations.
             stations (boolean): True for finding stations.
         Returns:
             json: json response from api.
@@ -222,13 +223,13 @@ class NOAA(UTIL):
 
         if stations:
             return self.make_get_request(
-                "/points/{point}/stations".format(point=point),
+                "/points/{point.lat:.4f},{point.lon:.4f}/stations".format(point=point),
                 end_point=self.DEFAULT_END_POINT)
         return self.make_get_request(
-            "/points/{point}".format(point=point),
+            "/points/{point.lat:.4f},{point.lon:.4f}".format(point=point),
             end_point=self.DEFAULT_END_POINT)
 
-    def points_forecast(self, lat, long, hourly=False):
+    def points_forecast(self, point, hourly=False):
         """Get observation data from a weather station.
 
         Response in this method should not be modified.
@@ -236,16 +237,15 @@ class NOAA(UTIL):
         functional tests @todo(paulokuong) later on.
 
         Args:
-            lat (float): latitude of the weather station coordinate.
-            long (float): longitude of the weather station coordinate.
+            point (noaa_sdk.noaa.Coordinates): coordinates to find nearby weather stations.
             hourly (boolean[optional]): True for getting hourly forecast.
         Returns:
             json: json response from api.
         """
 
         points = self.make_get_request(
-            "/points/{lat},{long}".format(
-                lat=lat, long=long), end_point=self.DEFAULT_END_POINT)
+            "/points/{point.lat:.4f},{point.lon:.4f}".format(
+                point=point), end_point=self.DEFAULT_END_POINT)
         uri = points['properties']['forecast']
         if hourly:
             uri = points['properties']['forecastHourly']
