@@ -8,9 +8,7 @@ setup(name='noaa-sdk',
       version='0.1.17',
       description='NOAA API (V3) Python 3 SDK.',
       install_requires=[
-          'httplib2==0.10.3',
-          'urllib3>=1.23',
-          'requests==2.21.0'
+          'requests==2.22.0'
       ],
       classifiers=[
           'Development Status :: 3 - Alpha',
@@ -23,7 +21,7 @@ setup(name='noaa-sdk',
       author='Paulo Kuong',
       author_email='paulo.kuong@gmail.com',
       license='MIT',
-      packages=find_packages(),
+      packages=find_packages(exclude=["tests"]),
       include_package_data=True,
       zip_safe=False,
       long_description=long_description)

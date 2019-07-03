@@ -1,7 +1,7 @@
 from urllib.parse import urlencode
 import requests
 
-from util import UTIL
+from noaa_sdk.util import UTIL
 
 
 class NCDC(UTIL):
