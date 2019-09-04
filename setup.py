@@ -5,7 +5,7 @@ with open('README.rst') as file:
     long_description = file.read()
 
 setup(name='noaa-sdk',
-      version='0.1.17',
+      version='0.1.18',
       description='NOAA API (V3) Python 3 SDK.',
       install_requires=[
           'requests==2.22.0'
