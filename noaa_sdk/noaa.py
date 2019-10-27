@@ -167,14 +167,21 @@ class NOAA(UTIL):
             'heatIndex', 'windSpeed', 'elevation'
         """
 
+        lat, lon = self._osm.get_lat_lon_by_postalcode_country(
+            postalcode, country)
+        
+        return self.get_observations_by_lat_lon(lat, lon, start, end, num_of_stations)
+        
+    def get_observations_by_lat_lon(
+            self, lat, lon, start=None, end=None, num_of_stations=1):
+        "Same as get_observations() but uses Lat and Lon instead of Postalcode and Country"
+
         stations_observations_params = {}
         if start:
             stations_observations_params['start'] = start
         if end:
             stations_observations_params['end'] = end
 
-        lat, lon = self._osm.get_lat_lon_by_postalcode_country(
-            postalcode, country)
         points_res = self.points(
             '{},{}'.format(round(lat, 4), round(lon, 4)))
 
