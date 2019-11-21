@@ -6,7 +6,7 @@ NOAA Python SDK
 SDK for NOAA Weather Service REST API.
 
     | Fully unit tested SDK for NOAA Weather Service REST API.
-    | https://forecast-v3.weather.gov/documentation
+    | https://www.weather.gov/documentation/services-web-api
     | https://github.com/paulokuong/noaa
 
 Requirements

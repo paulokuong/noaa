@@ -5,7 +5,7 @@ NOAA Python SDK
 SDK for NOAA Weather Service REST API for getting recent and forecast data. For old observation data, please just download the  Global Historical Climatology Network data from here: https://www1.ncdc.noaa.gov/pub/data/ghcn/
 
 > Fully unit tested SDK for NOAA Weather Service REST API.
-Official documentation: https://forecast-v3.weather.gov/documentation
+Official documentation: https://www.weather.gov/documentation/services-web-api
 
 Requirements
 ------------

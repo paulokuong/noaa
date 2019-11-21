@@ -2,7 +2,7 @@
 API Wrapper for NOAA API V3
 ===========================
 For more detailed information about NOAA API,
-visit: https://forecast-v3.weather.gov/documentation
+visit: https://www.weather.gov/documentation/services-web-api
 
 Geoencoding is made possible by Open Street Map (© OpenStreetMap contributors)
 For copyright information, visit: https://www.openstreetmap.org/copyright
