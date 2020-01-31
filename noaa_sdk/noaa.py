@@ -36,7 +36,7 @@ class OSM(UTIL):
         """
         self._user_agent = 'pypi noaa_sdk'
         self._accept = ACCEPT.JSON
-        super(show_uri).__init__(
+        super(OSM, self).__init__(
             user_agent=self._user_agent, accept=ACCEPT.JSON,
             show_uri=show_uri)
 
@@ -105,7 +105,7 @@ class NOAA(UTIL):
         if not accept:
             accept = ACCEPT.GEOJSON
 
-        super(user_agent, accept, show_uri).__init__(
+        super(NOAA, self).__init__(
             user_agent=user_agent, accept=accept,
             show_uri=show_uri)
         self._osm = OSM()

@@ -36,7 +36,7 @@ class NCDC(UTIL):
             user_agent = self.DEFAULT_USER_AGENT
 
         self._token = token
-        super(token, user_agent, accept, show_uri).__init__(
+        super(NCDC, self).__init__(
             user_agent=user_agent, accept=accept,
             show_uri=show_uri)
 
