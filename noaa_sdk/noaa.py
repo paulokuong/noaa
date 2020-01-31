@@ -11,7 +11,10 @@ For copyright information, visit: https://www.openstreetmap.org/copyright
 """
 
 import json
-from urllib.parse import urlencode
+try:
+    from urllib.parse import urlencode
+except ImportError:
+    from urllib import urlencode
 
 from noaa_sdk.util import UTIL
 from noaa_sdk.accept import ACCEPT
@@ -33,7 +36,7 @@ class OSM(UTIL):
         """
         self._user_agent = 'pypi noaa_sdk'
         self._accept = ACCEPT.JSON
-        super().__init__(
+        super(show_uri).__init__(
             user_agent=self._user_agent, accept=ACCEPT.JSON,
             show_uri=show_uri)
 
@@ -102,7 +105,7 @@ class NOAA(UTIL):
         if not accept:
             accept = ACCEPT.GEOJSON
 
-        super().__init__(
+        super(user_agent, accept, show_uri).__init__(
             user_agent=user_agent, accept=accept,
             show_uri=show_uri)
         self._osm = OSM()
