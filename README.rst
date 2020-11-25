@@ -29,8 +29,8 @@ Code sample
 
 .. code:: python
 
-    from noaa_sdk import noaa
-    n = noaa.NOAA()
+    from noaa_sdk import NOAA
+    n = NOAA()
     res = n.get_forecasts('11365', 'US', type='forecastGridData')
     for i in res:
         print(i)
@@ -39,8 +39,8 @@ Code sample
 
 .. code:: python
 
-    from noaa_sdk import noaa
-    n = noaa.NOAA()
+    from noaa_sdk import NOAA
+    n = NOAA()
     observations = n.get_observations('11365','US')
     for observation in observations:
         print(observation)
@@ -49,8 +49,8 @@ Code sample
 
 .. code:: python
 
-    from noaa_sdk import noaa
-    n = noaa.NOAA()
+    from noaa_sdk import NOAA
+    n = NOAA()
     n.points_forecast(40.7314, -73.8656, type='forecastGridData')
 
 Contributors

@@ -34,18 +34,18 @@ To get weather forecast for a coordinate:
 
 ```python
 
-    from noaa_sdk import noaa
+    from noaa_sdk import NOAA
 
-    n = noaa.NOAA()
+    n = NOAA()
     n.points_forecast(40.7314, -73.8656, type='forecastGridData')
 ```
 
 To get weather forecast with postal code and country code.
 ```python
 
-    from noaa_sdk import noaa
+    from noaa_sdk import NOAA
 
-    n = noaa.NOAA()
+    n = NOAA()
     res = n.get_forecasts('11365', 'US', type='forecastGridData')
     for i in res:
         print(i)
@@ -68,9 +68,9 @@ To get weather observation data from all nearest stations in 11375
 
 ```python
 
-    from noaa_sdk import noaa
+    from noaa_sdk import NOAA
 
-    n = noaa.NOAA()
+    n = NOAA()
     observations = n.get_observations('11365','US')
     for observation in observations:
         print(observation)
