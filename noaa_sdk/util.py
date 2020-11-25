@@ -36,12 +36,19 @@ class UTIL(object):
             @wraps(request)
             def wrapper(*args, **kargs):
                 status_code = ''
+                response = {}
                 retry = 0
                 fib_num_a = 1
                 fib_num_b = 1
 
                 while status_code == '' or (retry <= max_retries and (
                         status_code == '' or status_code != 200)):
+                    if retry > 0:
+                        print(
+                            ('Previous request failed with code {}. '
+                             'Retrying...').format(status_code))
+                        print('Previous Response: {}'.format(
+                            response.text))
                     response = request(*args, **kargs)
                     status_code = response.status_code
                     new_interval = fib_num_b + fib_num_a
@@ -99,7 +106,7 @@ class UTIL(object):
             'accept': self._accept
         }
 
-    @_retry_request_decorator(10)
+    @_retry_request_decorator(5)
     def _get(self, end_point, uri, header):
         response = None
         try:

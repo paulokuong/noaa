@@ -28,28 +28,30 @@ Keep on changing this SDK when NOAA updates their API. Class can be extended
 Code sample
 -----------
 
+There are 3 types of forecast responses: forecast, forecastHourly, forecastGridData.
+
 To get weather forecast for a coordinate:
 
 ```python
 
-    from noaa_sdk import noaa
+    from noaa_sdk import NOAA
 
-    n = noaa.NOAA()
-    n.points_forecast(40.7314, -73.8656, hourly=False)
+    n = NOAA()
+    n.points_forecast(40.7314, -73.8656, type='forecastGridData')
 ```
 
 To get weather forecast with postal code and country code.
 ```python
 
-    from noaa_sdk import noaa
+    from noaa_sdk import NOAA
 
-    n = noaa.NOAA()
-    res = n.get_forecasts('11365', 'US', True)
+    n = NOAA()
+    res = n.get_forecasts('11365', 'US')
     for i in res:
         print(i)
 ```
 
-Result
+Result from response type: forecast and forecastHourly
 ```python
     {'startTime': '2018-02-18T00:00:00-05:00', 'detailedForecast': '', 'shortForecast': 'Partly Cloudy', 'windSpeed': '5 mph', 'number': 148, 'icon': 'https://api.weather.gov/icons/land/night/sct?size=small', 'windDirection': 'SW', 'isDaytime': False, 'temperatureTrend': None, 'endTime': '2018-02-18T01:00:00-05:00', 'name': '', 'temperatureUnit': 'F', 'temperature': 34}
     {'startTime': '2018-02-18T01:00:00-05:00', 'detailedForecast': '', 'shortForecast': 'Mostly Cloudy', 'windSpeed': '5 mph', 'number': 149, 'icon': 'https://api.weather.gov/icons/land/night/bkn?size=small', 'windDirection': 'SW', 'isDaytime': False, 'temperatureTrend': None, 'endTime': '2018-02-18T02:00:00-05:00', 'name': '', 'temperatureUnit': 'F', 'temperature': 33}
@@ -57,13 +59,29 @@ Result
     {'startTime': '2018-02-18T03:00:00-05:00', 'detailedForecast': '', 'shortForecast': 'Partly Cloudy', 'windSpeed': '5 mph', 'number': 151, 'icon': 'https://api.weather.gov/icons/land/night/sct?size=small', 'windDirection': 'SW', 'isDaytime': False, 'temperatureTrend': None, 'endTime': '2018-02-18T04:00:00-05:00', 'name': '', 'temperatureUnit': 'F', 'temperature': 31}
 ```
 
+To get weather forecast with postal code and country code with response type "forecastGridData".
+```python
+
+    from noaa_sdk import NOAA
+
+    n = NOAA()
+    res = n.get_forecasts('11365', 'US', type='forecastGridData')
+    for i in res:
+        print(i)
+```
+
+Result from response type: forecastGridData
+```python
+  {'@id': 'https://api.weather.gov/gridpoints/OKX/39,36', '@type': 'wx:Gridpoint', 'updateTime': '2020-11-24T08:51:35+00:00', 'validTimes': '2020-11-24T02:00:00+00:00/P7DT5H', 'elevation': {'unitCode': 'wmoUnit:m', 'value': 24.9936}, 'forecastOffice': 'https://api.weather.gov/offices/OKX', 'gridId': 'OKX', 'gridX': '39', 'gridY': '36', 'temperature': {'uom': 'wmoUnit:degC', 'values': [{'validTime': '2020-11-24T02:00:00+00:00/PT1H', 'value': 5.555555555555555}, {'validTime': '2020-11-24T03:00:00+00:00/PT1H', 'value': 6.111111111111111}, {'validTime': '2020-11-24T04:00:00+00:00/PT1H', 'value': 5.555555555555555}, {'validTime': '2020-11-24T05:00:00+00:00/PT5H', 'value': 6.111111111111111}, {'validTime': '2020-11-24T10:00:00+00:00/PT1H', 'value': 5.555555555555555}, {'validTime': '2020-11-24T11:00:00+00:00/PT1H', 'value': 4.444444444444445}, {'validTime': '2020-11-24T12:00:00+00:00/PT1H', 'value': 3.3333333333333335}, {'validTime': '2020-11-24T13:00:00+00:00/PT1H', 'value': 3.888888888888889}, {'validTime': '2020-11-24T14:00:00+00:00/PT1H', 'value': 5}, {'validTime': '2020-11-24T15:00:00+00:00/PT1H', 'value': 6.111111111111111}, {'validTime': '2020-11-24T16:00:00+00:00/PT1H', 'value': 7.222222222222222}, {'validTime': '2020-11-24T17:00:00+00:00/PT2H', 'value': 8.333333333333334}, {'validTime': '2020-11-24T19:00:00+00:00/PT1H', 'value': 8.88888888888889}, {'validTime': '2020-11-24T20:00:00+00:00/PT1H', 'value': 8.333333333333334}, {'validTime': '2020-11-24T21:00:00+00:00/PT1H', 'value': 7.777777777777778}, {'validTime': '2020-11-24T22:00:00+00:00/PT1H', 'value': 7.222222222222222}.....
+```
+
 To get weather observation data from all nearest stations in 11375
 
 ```python
 
-    from noaa_sdk import noaa
+    from noaa_sdk import NOAA
 
-    n = noaa.NOAA()
+    n = NOAA()
     observations = n.get_observations('11365','US')
     for observation in observations:
         print(observation)
