@@ -46,7 +46,7 @@ To get weather forecast with postal code and country code.
     from noaa_sdk import NOAA
 
     n = NOAA()
-    res = n.get_forecasts('11365', 'US', type='forecastGridData')
+    res = n.get_forecasts('11365', 'US')
     for i in res:
         print(i)
 ```
@@ -57,6 +57,17 @@ Result from response type: forecast and forecastHourly
     {'startTime': '2018-02-18T01:00:00-05:00', 'detailedForecast': '', 'shortForecast': 'Mostly Cloudy', 'windSpeed': '5 mph', 'number': 149, 'icon': 'https://api.weather.gov/icons/land/night/bkn?size=small', 'windDirection': 'SW', 'isDaytime': False, 'temperatureTrend': None, 'endTime': '2018-02-18T02:00:00-05:00', 'name': '', 'temperatureUnit': 'F', 'temperature': 33}
     {'startTime': '2018-02-18T02:00:00-05:00', 'detailedForecast': '', 'shortForecast': 'Mostly Cloudy', 'windSpeed': '5 mph', 'number': 150, 'icon': 'https://api.weather.gov/icons/land/night/bkn?size=small', 'windDirection': 'SW', 'isDaytime': False, 'temperatureTrend': None, 'endTime': '2018-02-18T03:00:00-05:00', 'name': '', 'temperatureUnit': 'F', 'temperature': 31}
     {'startTime': '2018-02-18T03:00:00-05:00', 'detailedForecast': '', 'shortForecast': 'Partly Cloudy', 'windSpeed': '5 mph', 'number': 151, 'icon': 'https://api.weather.gov/icons/land/night/sct?size=small', 'windDirection': 'SW', 'isDaytime': False, 'temperatureTrend': None, 'endTime': '2018-02-18T04:00:00-05:00', 'name': '', 'temperatureUnit': 'F', 'temperature': 31}
+```
+
+To get weather forecast with postal code and country code with response type "forecastGridData".
+```python
+
+    from noaa_sdk import NOAA
+
+    n = NOAA()
+    res = n.get_forecasts('11365', 'US', type='forecastGridData')
+    for i in res:
+        print(i)
 ```
 
 Result from response type: forecastGridData

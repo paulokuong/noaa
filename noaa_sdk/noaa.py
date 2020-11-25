@@ -108,7 +108,7 @@ class NOAA(UTIL):
         self._osm = OSM()
 
     def get_forecasts(
-            self, postal_code, country, hourly=False, type='forecastGridData'):
+            self, postal_code, country, hourly=False, type='forecastHourly'):
         """Get forecasts by postal code and country code.
 
            This is an extensive functionality, aligning data
