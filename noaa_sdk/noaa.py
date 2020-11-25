@@ -107,24 +107,30 @@ class NOAA(UTIL):
             show_uri=show_uri)
         self._osm = OSM()
 
-    def get_forecasts(self, postal_code, country, hourly=True):
+    def get_forecasts(
+            self, postal_code, country, hourly=False, type='forecastGridData'):
         """Get forecasts by postal code and country code.
 
            This is an extensive functionality, aligning data
            from Open Street Map to enable postal code and country code
            params for weather forecast data.
 
+           To be deprecated param marked with (*).
+
         Args:
             postalcode (str): postal code.
             country (str): 2 letter country code.
-            hourly (boolean[optional]): True for getting hourly forecast.
+            * hourly (boolean[optional]): True for getting hourly forecast.
+            type (string[optional]): forecast, forecastHourly or
+                forecastGridData. If specified, it will overwrite the
+                deprecated param hourly.
         Returns:
             list: list of weather forecasts.
         """
 
         lat, lon = self._osm.get_lat_lon_by_postalcode_country(
             postal_code, country)
-        res = self.points_forecast(lat, lon, hourly)
+        res = self.points_forecast(lat, lon, hourly=hourly, type=type)
 
         if 'status' in res and res['status'] == 503 and 'detail' in res:
             raise Exception('Status: {}, NOAA API Error Response: {}'.format(
@@ -132,9 +138,11 @@ class NOAA(UTIL):
         elif 'properties' not in res:
             raise Exception(
                 '"properties" attribute not found. Possible response json changes')
-        elif 'properties' in res and 'periods' not in res['properties']:
+        elif 'properties' in res and 'periods' not in res['properties'] and type != 'forecastGridData':
             raise Exception(
                 '"periods" attribute not found. Possible response json changes')
+        if type == 'forecastGridData':
+            return res['properties']
         return res['properties']['periods']
 
     def get_observations(
@@ -169,9 +177,9 @@ class NOAA(UTIL):
 
         lat, lon = self._osm.get_lat_lon_by_postalcode_country(
             postalcode, country)
-        
+
         return self.get_observations_by_lat_lon(lat, lon, start, end, num_of_stations)
-        
+
     def get_observations_by_lat_lon(
             self, lat, lon, start=None, end=None, num_of_stations=1):
         "Same as get_observations() but uses Lat and Lon instead of Postalcode and Country"
@@ -235,27 +243,37 @@ class NOAA(UTIL):
             "/points/{point}".format(point=point),
             end_point=self.DEFAULT_END_POINT)
 
-    def points_forecast(self, lat, long, hourly=False):
+    def points_forecast(self, lat, long, hourly=False, type=''):
         """Get observation data from a weather station.
 
         Response in this method should not be modified.
         In this way, we can keep track of changes made by NOAA through
         functional tests @todo(paulokuong) later on.
 
+        To be deprecated param marked with (*).
+
         Args:
             lat (float): latitude of the weather station coordinate.
             long (float): longitude of the weather station coordinate.
-            hourly (boolean[optional]): True for getting hourly forecast.
+            * hourly (boolean[optional]): True for getting hourly forecast.
+            type (string[optional]): forecast, forecastHourly or
+                forecastGridData. If specified, it will overwrite the
+                deprecated param hourly.
         Returns:
             json: json response from api.
         """
 
-        points = self.make_get_request(
+        res = self.make_get_request(
             "/points/{lat},{long}".format(
                 lat=lat, long=long), end_point=self.DEFAULT_END_POINT)
-        uri = points['properties']['forecast']
-        if hourly:
-            uri = points['properties']['forecastHourly']
+
+        if type:
+            uri = res['properties'][type]
+        else:
+            if hourly:
+                uri = res['properties']['forecastHourly']
+            else:
+                uri = res['properties']['forecast']
 
         return self.make_get_request(
             uri=uri, end_point=self.DEFAULT_END_POINT)

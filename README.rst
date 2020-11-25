@@ -24,13 +24,14 @@ Goal
 Code sample
 -----------
 
+| There are 3 types of forecast responses: forecast, forecastHourly, forecastGridData.
 | To get weather forecast with postal code and country code.
 
 .. code:: python
 
     from noaa_sdk import noaa
     n = noaa.NOAA()
-    res = n.get_forecasts('11365', 'US', True)
+    res = n.get_forecasts('11365', 'US', type='forecastGridData')
     for i in res:
         print(i)
 
@@ -50,7 +51,7 @@ Code sample
 
     from noaa_sdk import noaa
     n = noaa.NOAA()
-    n.points_forecast(40.7314, -73.8656, hourly=False)
+    n.points_forecast(40.7314, -73.8656, type='forecastGridData')
 
 Contributors
 ------------
