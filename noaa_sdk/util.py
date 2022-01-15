@@ -40,6 +40,7 @@ class UTIL(object):
                 retry = 0
                 fib_num_a = 1
                 fib_num_b = 1
+                new_interval = 0
 
                 while status_code == '' or (retry <= max_retries and (
                         status_code == '' or status_code != 200)):
@@ -51,9 +52,9 @@ class UTIL(object):
                             response.text))
                     response = request(*args, **kargs)
                     status_code = response.status_code
+                    time.sleep(new_interval)
                     new_interval = fib_num_b + fib_num_a
                     fib_num_a = fib_num_b
-                    time.sleep(new_interval)
                     fib_num_b = new_interval
                     retry += 1
 
